@@ -161,6 +161,9 @@ import java.util.concurrent.TimeUnit;
  *     // Connection established successfully
  * }
  * </pre>
+ *
+ * @apiNote Java的Future接口，被netty封装成ChannelFuture，
+ * 只能查询操作的完成情况，或者阻塞当前线程等待操作完成。我们可以将回调方法传给ChannelFuture，在操作完成时自动执行。
  */
 public interface ChannelFuture extends Future<Void> {
 

@@ -174,17 +174,29 @@ import java.lang.annotation.Target;
  * {@link ChannelPipeline} to find out more about inbound and outbound operations,
  * what fundamental differences they have, how they flow in a  pipeline,  and how to handle
  * the operation in your application.
+ *
+ * @apiNote
+ *
+ *
+ * <p>ChannelHandler有两个主要的子接口：ChannelInboundHandler 和 ChannelOutboundHandler
+ * 从应用程序开发人员的角度来看，数据有入站和出站两种类型。
+ * 但是这里的入站和出站不是网络通信方面的入站和出站。而是相对于Netty Channel和Java NIO Channel而言的。
+ * 数据入站，是指数据从底层的Java NIO Channel到Netty的Channel。
+ * 数据出站，是指通过Netty的Channel来操作底层的Java NIO Channel。
  */
 public interface ChannelHandler {
 
     /**
      * Gets called after the {@link ChannelHandler} was added to the actual context and it's ready to handle events.
+     * @apiNote ChannelHandler 本身被添加到ChannelPipeline时调用
      */
     void handlerAdded(ChannelHandlerContext ctx) throws Exception;
 
     /**
      * Gets called after the {@link ChannelHandler} was removed from the actual context and it doesn't handle events
      * anymore.
+     *
+     * @apiNote ChannelHandler 本身被从ChannelPipeline中删除时调用
      */
     void handlerRemoved(ChannelHandlerContext ctx) throws Exception;
 
@@ -193,6 +205,8 @@ public interface ChannelHandler {
      *
      * @deprecated if you want to handle this event you should implement {@link ChannelInboundHandler} and
      * implement the method there.
+     *
+     * @apiNote 发生异常时调用
      */
     @Deprecated
     void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception;

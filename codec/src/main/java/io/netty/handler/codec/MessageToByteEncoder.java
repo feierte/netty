@@ -42,6 +42,11 @@ import io.netty.util.internal.TypeParameterMatcher;
  *         }
  *     }
  * </pre>
+ *
+ * @apiNote 处理网络IO时，需要进行序列化和反序列化，Java对象和字节流相互转换
+ * 对出站数据进行解码，基类是MessageToByteEncoder
+ *
+ * @see ByteToMessageDecoder
  */
 public abstract class MessageToByteEncoder<I> extends ChannelOutboundHandlerAdapter {
 
