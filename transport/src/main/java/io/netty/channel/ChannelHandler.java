@@ -175,8 +175,7 @@ import java.lang.annotation.Target;
  * what fundamental differences they have, how they flow in a  pipeline,  and how to handle
  * the operation in your application.
  *
- * @apiNote
- *
+ * @apiNote 在nio编程中，我们经常需要对channel的输入和输出事件进行处理，Netty抽象出一个ChannelHandler概念，专门用于处理此类事件。
  *
  * <p>ChannelHandler有两个主要的子接口：ChannelInboundHandler 和 ChannelOutboundHandler
  * 从应用程序开发人员的角度来看，数据有入站和出站两种类型。
