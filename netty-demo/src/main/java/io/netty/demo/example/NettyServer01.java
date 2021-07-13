@@ -7,6 +7,8 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.demo.codec.MessageDecoder;
+import io.netty.demo.codec.MessageEncoder;
 import io.netty.util.CharsetUtil;
 
 /**
@@ -30,6 +32,12 @@ public class NettyServer01 {
                 .childHandler(new ChannelInitializer<SocketChannel>() { // 7、创建一个通道初始化对象
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
+                        // 添加解码器
+                        ch.pipeline().addLast("messageDecoder", new MessageDecoder());
+
+                        // 添加编码器
+                        ch.pipeline().addLast("messageEncoder", new MessageEncoder());
+
                         // 8、向ChannelPipeline中添加自定义的业务处理ChannelHandler
                         ch.pipeline().addLast(new NettyServerHandler());
                     }
@@ -54,8 +62,9 @@ public class NettyServer01 {
          */
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            ByteBuf byteBuf = (ByteBuf) msg;
-            System.out.println("客户端消息: " + byteBuf.toString(CharsetUtil.UTF_8));
+            // ByteBuf byteBuf = (ByteBuf) msg;
+            // System.out.println("客户端消息: " + byteBuf.toString(CharsetUtil.UTF_8));
+            System.out.println("客户端消息: " + msg);
             // log.info("客户端消息: {}", byteBuf.toString(CharsetUtil.UTF_8));
         }
 
@@ -67,7 +76,8 @@ public class NettyServer01 {
          */
         @Override
         public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-            ctx.writeAndFlush(Unpooled.copiedBuffer("你好，我是netty服务端", CharsetUtil.UTF_8));
+            // ctx.writeAndFlush(Unpooled.copiedBuffer("你好，我是netty服务端", CharsetUtil.UTF_8));
+            ctx.writeAndFlush("你好，我是netty服务端");
         }
 
         /**
