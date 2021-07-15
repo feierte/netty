@@ -13,7 +13,7 @@ import java.util.List;
  * @author Jie Zhao
  * @date 2021/7/13 21:07
  */
-public class CharServerHandler extends SimpleChannelInboundHandler<String> {
+public class ChatServerHandler extends SimpleChannelInboundHandler<String> {
 
     public static List<Channel> channelList = new ArrayList<Channel>();
 
@@ -47,7 +47,7 @@ public class CharServerHandler extends SimpleChannelInboundHandler<String> {
             if (channel1 == channel) {
                 continue;
             }
-            channel1.writeAndFlush("[" + channel.remoteAddress().toString().substring(1) + "]说的话.");
+            channel1.writeAndFlush("[" + channel.remoteAddress().toString().substring(1) + "]说：" + msg);
         }
     }
 
