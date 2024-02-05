@@ -20,8 +20,7 @@ import io.netty.util.concurrent.FastThreadLocalThread;
 import reactor.blockhound.BlockHound;
 import reactor.blockhound.integration.BlockHoundIntegration;
 
-import java.util.function
-        .Function;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
