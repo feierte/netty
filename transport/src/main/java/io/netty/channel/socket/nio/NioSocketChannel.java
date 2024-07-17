@@ -412,12 +412,16 @@ public class NioSocketChannel extends AbstractNioByteChannel implements io.netty
                     // to check if the total size of all the buffers is non-zero.
                     ByteBuffer buffer = nioBuffers[0];
                     int attemptedBytes = buffer.remaining();
+                    // 调用 NIO 中的方法向 Channel 中写入数据
                     final int localWrittenBytes = ch.write(buffer);
                     if (localWrittenBytes <= 0) {
+                        // 进入这里来，表示 socket send 缓冲区已满，没有写进去数据，需要添加 write interestOps
                         incompleteWrite(true);
                         return;
                     }
+                    // 调整 socket send 缓冲区大小
                     adjustMaxBytesPerGatheringWrite(attemptedBytes, localWrittenBytes, maxBytesPerGatheringWrite);
+                    // 将已写入到 channel 的数据从 ChannelOutboundBuffer 中移除
                     in.removeBytes(localWrittenBytes);
                     --writeSpinCount;
                     break;

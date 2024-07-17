@@ -428,6 +428,9 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
      */
     protected abstract class AbstractUnsafe implements Unsafe {
 
+        /**
+         * todo：netty 发送数据的时候不是直接将数据写入 Channel 中，而是先写入到 ChannelOutboundBuffer 这个内存缓冲区，这么做是为什么呢？
+         */
         private volatile ChannelOutboundBuffer outboundBuffer = new ChannelOutboundBuffer(AbstractChannel.this);
         private RecvByteBufAllocator.Handle recvHandle;
         private boolean inFlush0;
