@@ -22,8 +22,7 @@ public class ByteBufTest {
         log(buffer);
         buffer.writeByte(11);
         log(buffer);
-
-        System.out.println("Hello ByteBuf");
+        log.info("hello ByteBuf");
     }
 
     @Test

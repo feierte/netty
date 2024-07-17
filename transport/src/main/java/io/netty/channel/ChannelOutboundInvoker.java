@@ -226,6 +226,14 @@ public interface ChannelOutboundInvoker {
 
     /**
      * Shortcut for call {@link #write(Object)} and {@link #flush()}.
+     *
+     * @see ChannelHandlerContext#writeAndFlush(Object)
+     * @apiNote 写入数据到 Channel 中。
+     * 该方法写入数据到 Channel 后，会触发 ChannelOutboundHandler 的执行，执行顺序是从 tail 开始向 head 依次顺序执行遇到的 ChannelOutboundHandler.
+     * ChannelHandlerContext#writeAndFlush(Object) 实现了该方法，数据写入到 Channel 后也会触发 ChannelOutboundHandler 的执行，
+     * 但是稍微有点不同之处在于不是从 tail 开始执行的，而是从当前调用 ChannelHandlerContext#writeAndFlush(Object) 的 ChannelHandler
+     * 开始向 head 依次顺序执行遇到的 ChannelOutboundHandler。如果当前 ChannelHandler 到 tail 之间有 ChannelOutboundHandler，那么
+     * 该 ChannelOutboundHandler 是不会被触发执行的。
      */
     ChannelFuture writeAndFlush(Object msg);
 
