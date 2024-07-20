@@ -413,6 +413,7 @@ public final class ChannelOutboundBuffer {
         assert maxBytes > 0;
         long nioBufferSize = 0;
         int nioBufferCount = 0;
+        // ByteBuffer 不是用的时候创建的，是事先在 ThreadLocal 中创建好了，用的时候从 ThreadLocal 中取即可
         final InternalThreadLocalMap threadLocalMap = InternalThreadLocalMap.get();
         ByteBuffer[] nioBuffers = NIO_BUFFERS.get(threadLocalMap);
         Entry entry = flushedEntry;
@@ -827,8 +828,12 @@ public final class ChannelOutboundBuffer {
         }
 
         static Entry newInstance(Object msg, int size, long total, ChannelPromise promise) {
+            // 从 Entry 对象池获取 Entry 对象
             Entry entry = RECYCLER.get();
             entry.msg = msg;
+            // Entry 封装了 ByteBuf，所以一个 Entry 对象大小，包含了 ByteBuf 大小 + Entry 对象中其他字段占据的内存大小 + 填充大小
+            // size：ByteBuf 大小
+            // CHANNEL_OUTBOUND_BUFFER_ENTRY_OVERHEAD 就是 Entry 对象中其他字段占据的内存大小 + 填充大小
             entry.pendingSize = size + CHANNEL_OUTBOUND_BUFFER_ENTRY_OVERHEAD;
             entry.total = total;
             entry.promise = promise;
