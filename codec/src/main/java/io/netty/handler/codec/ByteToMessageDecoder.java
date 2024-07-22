@@ -464,6 +464,8 @@ public abstract class ByteToMessageDecoder extends ChannelInboundHandlerAdapter 
                     }
                 }
 
+                // 正式解码之前记录一下 ByteBuf 中可读数据的长度，用于判断是否解码成功
+                // 因为解码成功的话，之后的 ByteBuf 可读数据长度会变小；如果没变说明没解码出数据
                 int oldInputLength = in.readableBytes();
                 decodeRemovalReentryProtection(ctx, in, out);
 
@@ -476,6 +478,7 @@ public abstract class ByteToMessageDecoder extends ChannelInboundHandlerAdapter 
                 }
 
                 if (out.isEmpty()) {
+                    // 走到这个分支，表示没有解码出消息（半包的原因）
                     if (oldInputLength == in.readableBytes()) {
                         break;
                     } else {
