@@ -199,10 +199,13 @@ public class DefaultChannelPipeline implements ChannelPipeline {
     public final ChannelPipeline addLast(EventExecutorGroup group, String name, ChannelHandler handler) {
         final AbstractChannelHandlerContext newCtx;
         synchronized (this) {
+            // 检查 handler 是否已经被添加过了；如果 handler 是 @Shareable 那边可以被添加多次；否则抛出异常
             checkMultiplicity(handler);
 
+            // 创建 ChannelHandlerContext
             newCtx = newContext(group, filterName(name, handler), handler);
 
+            // 将 ChannelHandlerContext 加入到 Pipeline 的双向链表中
             addLast0(newCtx);
 
             // If the registered is false it means that the channel was not registered on an eventLoop yet.
@@ -220,6 +223,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
                 return this;
             }
         }
+        // 触发 ChannelHandler#handlerAdded 方法回调
         callHandlerAdded0(newCtx);
         return this;
     }

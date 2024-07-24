@@ -92,6 +92,8 @@ abstract class AbstractChannelHandlerContext implements ChannelHandlerContext, R
 
     // Will be set to null if no child executor should be used, otherwise it will be set to the
     // child executor.
+    // 用来执行 ChannelHandler 中对应事件
+    // 如果为 null，ChannelHandler 中对应事件将会被 IO EventLoop 执行
     final EventExecutor executor;
     private ChannelFuture succeededFuture;
 
